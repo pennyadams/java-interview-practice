@@ -87,9 +87,19 @@ public class Main {
         System.out.print("fizzbuzz");
     }
 
+    private static boolean anagramChecker(String word_1, String word_2) {
+        /*
+        Two words are parsed in
+        Method returns true if the words are anagrams of eachother,
+        and false if they are not
+        E.g. 'listen' and 'silent' = true
+         */
+        return true;
+    }
+
     public static void main(String[] args) {
 
-        runPricingScenario();
+        //run methods here
 
 
     }
