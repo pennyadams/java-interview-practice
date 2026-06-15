@@ -8,7 +8,7 @@ public class Main {
     public static void runPricingScenario() {
         PricingService pricingService = new PricingService();
 
-        Customer standardCustomer = new Customer("Jo", CustomerType.STANDARD, 0);
+        Customer standardCustomer = new Customer("Bibble", CustomerType.STANDARD, 0);
         Customer premiumCustomer = new Customer("Premium Customer", CustomerType.PREMIUM, 100);
         Customer staffCustomer = new Customer("Staff Customer", CustomerType.STAFF, 150);
 
@@ -100,6 +100,8 @@ public class Main {
     public static void main(String[] args) {
 
         //run methods here
+
+
     }
 
 

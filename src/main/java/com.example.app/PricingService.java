@@ -9,6 +9,7 @@ public class PricingService {
     private static final BigDecimal NEXT_DAY_DELIVERY = new BigDecimal("7.99");
 
     public BigDecimal calculateSubtotal(Order order) {
+        // BUG
         return order.getItems().stream()
                 .map(OrderItem::getUnitPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -26,14 +27,14 @@ public class PricingService {
         BigDecimal discount = BigDecimal.ZERO;
 
         if (order.getCustomer().getType() == CustomerType.PREMIUM) {
-            discount = discount.add(subtotal.multiply(new BigDecimal("0.05")));
+            discount = discount.add(subtotal.multiply(new BigDecimal("0.05"))); // BUG: should be 10%
         }
 
         if (order.getCustomer().getType() == CustomerType.STAFF) {
-            discount = discount.add(subtotal.multiply(new BigDecimal("0.10")));
+            discount = discount.add(subtotal.multiply(new BigDecimal("0.10"))); // BUG: should be 20%
         }
 
-        if (order.getCustomer().getLoyaltyPoints() > 100) {
+        if (order.getCustomer().getLoyaltyPoints() > 100) { // BUG: should include exactly 100
             discount = discount.add(subtotal.multiply(new BigDecimal("0.05")));
         }
 
@@ -48,11 +49,11 @@ public class PricingService {
         // Next-day delivery is never free
         // Otherwise standard delivery is £3.99 and next-day delivery is £7.99
 
-        if (subtotal.compareTo(new BigDecimal("50.00")) > 0) {
+        if (subtotal.compareTo(new BigDecimal("50.00")) > 0) { // BUG: should include exactly £50
             return BigDecimal.ZERO;
         }
 
-        if (order.isNextDayDelivery()) {
+        if (order.isNextDayDelivery()) { // BUG: this check happens too late
             return NEXT_DAY_DELIVERY;
         }
 
@@ -67,13 +68,14 @@ public class PricingService {
         // SAVE5 gives £5 off orders over £25
         // Invalid or blank codes give no discount
 
+        // BUG
 
         if (order.getDiscountCode() == null || order.getDiscountCode().isBlank()) {
             return BigDecimal.ZERO;
         }
 
         if (order.getDiscountCode().equals("SAVE10")) {
-            return subtotal.multiply(new BigDecimal("0.01"));
+            return subtotal.multiply(new BigDecimal("0.01")); // BUG: should be 10%
         }
 
         if (order.getDiscountCode().equals("SAVE5") && subtotal.compareTo(new BigDecimal("25.00")) >= 0) {
@@ -94,6 +96,7 @@ public class PricingService {
                 .subtract(codeDiscount)
                 .add(delivery);
 
+        // BUG: total should never go below zero before delivery is added
         return total.setScale(2, RoundingMode.HALF_UP);
     }
 }

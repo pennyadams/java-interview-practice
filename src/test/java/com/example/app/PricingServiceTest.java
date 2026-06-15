@@ -13,7 +13,7 @@ class PricingServiceTest {
 
     @Test
     void shouldCalculateSubtotalForSingleItem() {
-        Customer customer = new Customer("Mike", CustomerType.STANDARD, 0);
+        Customer customer = new Customer("Penny", CustomerType.STANDARD, 0);
 
         Order order = new Order(
                 customer,
